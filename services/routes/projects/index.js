@@ -15,9 +15,16 @@ router.post("/:studentId", async (req, res)=> {
     console.log(response)
     res.send(response.rows[0])
 })
+
 router.get("/:studentId", async (req, res)=> {
    const response= await db.query('SELECT * FROM "Projects" WHERE "studentId"=$1 ',[req.params.studentId]) 
    res.send(response.rows)
+})
+
+router.get('/getbyEmail/:email',async(req,res)=>{
+    console.log(req.params.email)
+    let response=await db.query('SELECT * FROM "Students" CROSS JOIN "Projects" WHERE email=$1',[req.params.email])
+    res.send(response.rows)
 })
 
 module.exports=router
