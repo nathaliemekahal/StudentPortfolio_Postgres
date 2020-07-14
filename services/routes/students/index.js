@@ -22,4 +22,26 @@ router.post("/", async (req, res)=> {
     console.log(response)
     res.send(response.rows[0])
 })
+
+router.put('/:id',async(req,res)=>{
+    try {
+        let params=[]
+        let query= 'UPDATE "Students" SET '
+
+        for(bodyParams in req.body){
+        query+=
+        (params.length>0? ", ": '') + bodyParams +' = $'+(params.length+1)
+        params.push(req.body[bodyParams])
+        }
+        params.push(req.params.id)
+        query+=' WHERE _id = $'+params.length + ' RETURNING *'
+
+        console.log(query)
+        const result = await db.query(query, params)
+        res.send(result.rows)
+        
+    } catch (error) {
+        console.log(error)
+    }
+})
 module.exports=router
