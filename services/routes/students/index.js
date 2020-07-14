@@ -14,27 +14,25 @@ router.get('/',async(req,res)=>{
     delete req.query.offset
     delete req.query.limit
 
-    let query = 'SELECT * FROM "Students" ' //create my query
+    let query = 'SELECT * FROM "Students" ' 
 
     const params = []
-    for (queryParam in req.query) { //for each value in query string, I'll filter
+    for (queryParam in req.query) { 
         params.push(req.query[queryParam])
 
-        if (params.length === 1) // for the first, I'll add the where clause
+        if (params.length === 1) 
             query += `WHERE ${queryParam} = $${params.length} `
-        else // the all the rest, it'll start with AND
+        else
             query += ` AND ${queryParam} = $${params.length} `
     }
 
-    query += " ORDER BY _id " + order  //adding the sorting 
+    query += " ORDER BY _id " + order 
 
     params.push (limit)
     query += ` LIMIT $${params.length} `
     params.push(offset)
     query += ` OFFSET $${params.length}`
-    // query += ` LIMIT $${params.length+1} OFFSET $${params.length+2}` //adding the pagination
-    // params.push(limit)
-    // params.push(offset) 
+   
     console.log(query)
 
     //you can also specify just the fields you are interested in, like:
