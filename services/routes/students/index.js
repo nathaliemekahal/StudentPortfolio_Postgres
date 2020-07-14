@@ -78,4 +78,13 @@ router.put('/:id',async(req,res)=>{
         console.log(error)
     }
 })
+
+router.delete("/:id", async (req, res) => {
+    const response = await db.query(`DELETE FROM "Students" WHERE _id = $1`, [ req.params.id ])
+
+    if (response.rowCount === 0)
+        return res.status(404).send("Not Found")
+    
+    res.send("OK")
+})
 module.exports=router

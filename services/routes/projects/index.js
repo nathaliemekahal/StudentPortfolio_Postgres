@@ -15,6 +15,9 @@ router.post("/:studentId", async (req, res)=> {
     console.log(response)
     res.send(response.rows[0])
 })
-
+router.get("/:studentId", async (req, res)=> {
+   const response= await db.query('SELECT * FROM "Projects" WHERE "studentId"=$1 ',[req.params.studentId]) 
+   res.send(response.rows)
+})
 
 module.exports=router
